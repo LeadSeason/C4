@@ -9,10 +9,6 @@ c4Dropper::c4Dropper()
 c4Dropper::c4Dropper(int step, int dir)
 : motor(AccelStepper::DRIVER, step, dir), limitSwitch(A0)
 {
-    // Starting Serial
-    Serial.begin(115200);
-    Serial.println("Serial started");
-
     dropperServo.attach(10);
     dropperServo.write(0);
 
@@ -20,17 +16,14 @@ c4Dropper::c4Dropper(int step, int dir)
     motor.setMaxSpeed(8000.0);
     motor.setAcceleration(16000.0);
 
-    Serial.println("Going to home");
     while (!limitSwitch.getState())
     {
         motor.setSpeed(400);
         motor.run();
         limitSwitch.loop();
     }
-
     motor.stop();
     motor.setCurrentPosition(0);
-    Serial.println("Motor set to 0");
 }
 
 void c4Dropper::goToHome()
