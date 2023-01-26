@@ -353,7 +353,7 @@ int Game::evaluateBoard(int board[C_ROWS][C_COLUMNS], int depth)
 
 int Game::minmax(int board[C_ROWS][C_COLUMNS], int depth, bool maximizing)
 {
-	if (depth >= depth || checkWinners(board) != 0)
+	if (depth >= maxDepth | checkWinners(board) != 0)
 	{
 		return evaluateBoard(board, depth);
 	}

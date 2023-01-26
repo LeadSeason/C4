@@ -39,7 +39,7 @@ void setup()
     utils::Print("Sensors init    ... \033[38;5;2mOK\033[38;5;7m\n");
 
     utils::Print("Game logic init ... ");
-    game = Game(6);
+    game = Game();
     utils::Print("\033[38;5;2mOK\033[38;5;7m\n");
     game.displayBoard();
 }
