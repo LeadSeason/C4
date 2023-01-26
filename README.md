@@ -1,7 +1,7 @@
 <h1 align="center">Connect4 Robot</h1>
 <p align="center">Connect 4 robot to play against</p>
 <p  align="center">
-  <img src="https://github.com/LeadSeason/C4/raw/main/assets/images/IMG00.jpg">
+  <img src="https://raw.githubusercontent.com/LeadSeason/C4/master/assets/images/IMG00.jpg">
 </p>
 
 ## about
