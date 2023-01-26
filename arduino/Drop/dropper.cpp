@@ -16,13 +16,16 @@ c4Dropper::c4Dropper(int step, int dir)
     motor.setMaxSpeed(8000.0);
     motor.setAcceleration(16000.0);
 
-    while (!limitSwitch.getState())
+    motor.setCurrentPosition(0);
+    while (limitSwitch.getState())
     {
         motor.setSpeed(400);
         motor.run();
         limitSwitch.loop();
     }
     motor.stop();
+    Serial.print("Moved to get home:");
+    Serial.println(motor.currentPosition());
     motor.setCurrentPosition(0);
 }
 
@@ -42,7 +45,7 @@ void c4Dropper::goToHome()
 
 void c4Dropper::dropPice(int pos)
 {
-    motor.moveTo(pos);
+    motor.moveTo(-pos);
     while (motor.distanceToGo() != 0)
     {
         motor.run();

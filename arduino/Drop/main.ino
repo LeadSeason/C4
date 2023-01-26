@@ -13,7 +13,7 @@
 #define PINSERVO 10
 #define THRESHOLD 80
 
-const int piceLocations[8] = {0, 891, 1782, 2673, 3564, 4455, 5346, 6237};
+const int piceLocations[8] = {0, 7400, 6412, 5400, 4350, 3306, 2254, 1252};
 const uint8_t sensorPins[] = {62, 63, 64, 65, 66, 67, 68};
 c4Dropper dropper;
 Sensor sensors[sizeof(sensorPins)];
@@ -22,26 +22,26 @@ Game game;
 void setup()
 {
     Serial.begin(115200);
-    utils::Print("Serial init ... OK\n");
+    utils::Print("Serial init     ... \033[38;5;2mOK\033[38;5;7m\n");
 
-    utils::Print("Dropper init ... ");
+    utils::Print("Dropper init    ... \n");
     dropper = c4Dropper(PINSTEP, PINDIR);
-    utils::Print("OK\n");
+    utils::Print("Dropper init    ... \033[38;5;2mOK\033[38;5;7m\n");
 
-    utils::Print("Sensors init ... ");
+    utils::Print("Sensors init    ... \n");
     for (int i = 0; i < sizeof(sensorPins); i++)
     {
         pinMode(sensorPins[i], INPUT);
         sensors[i] = Sensor(sensorPins[i], THRESHOLD);
-        utils::Print("ping: %d\n", sensorPins[i]);
+        utils::Print("\033[38;5;7mSensor (%d)\033[38;5;4m %d \033[38;5;%dm%d\033[38;5;7m, (%d - %d - %d)\n",
+        i, sensors[i].getNewValue(), sensors[i].getState(), sensors[i].getState(), sensors[i].getMinValue(), sensors[i].getValue(), sensors[i].getMaxValue());
     }
-    utils::Print("OK\n");
+    utils::Print("Sensors init    ... \033[38;5;2mOK\033[38;5;7m\n");
 
     utils::Print("Game logic init ... ");
-    game = Game();
-    utils::Print("OK\n");
+    game = Game(6);
+    utils::Print("\033[38;5;2mOK\033[38;5;7m\n");
     game.displayBoard();
-
 }
 
 void loop()
@@ -53,17 +53,28 @@ void loop()
         if (sensor.getState())
         {
             // clear terminal.
-            utils::Print("\033[2J\033[3J\033[1;1H");
             // Print info about puck detection results.
             utils::Print("%d \033[38;5;7mLed (%d)\033[38;5;4m %d \033[38;5;%dm%d\033[38;5;7m, (%d - %d - %d)\n",
             sens_loop, colunm, sensor.getNewValue(), sensor.getState(), sensor.getState(), sensor.getMinValue(), sensor.getValue(), sensor.getMaxValue());
 
-            game.dropPiece(colunm + 1, 1);
+            game.dropPiece(colunm + 1);
+            utils::Print("Gameover State: %d\n", game.checkWinners());
             game.displayBoard();
+            checkGameOver(game.checkWinners());
+            utils::Print("\n");
+
+            int aiMove = game.aiPlayMove();
 
             while (sensor.getStateLoop()) {}
 
+            utils::Print("🤔Ai Playing move: %d. Dropping\n", aiMove);
+            utils::Print("Gameover State: %d\n", game.checkWinners());
+            game.displayBoard();
+
+            dropper.dropPice(piceLocations[aiMove]);
+
             checkGameOver(game.checkWinners());
+            utils::Print("\n");
         }
         colunm++;
     }
@@ -76,23 +87,23 @@ void checkGameOver(int gameover)
 	{
 		if (gameover == -1)
 		{
-			utils::Print("No body won Sad🙁");
+			utils::Print("No body won Sad🙁\n");
 		}
 		else if (gameover == 1)
 		{
-			utils::Print("Yellow Player Won🎉");
+			utils::Print("Orage Player Won🎉\n");
 		}
 		else if (gameover == 2)
 		{
-			utils::Print("Red Player Won🎉");
+			utils::Print("Yellow Player Won🎉\n");
 		}
 		else
 		{
-			utils::Print("Player %d Won🎉", gameover);
+			utils::Print("Player %d Won🎉\n", gameover);
 		}
 		utils::Print("\n");
 
-        utils::Print("Gameover. Clear board and press reset to restart game");
+        utils::Print("Gameover. Clear board and press reset to restart game\n");
         while (true) {}
 	}
 }

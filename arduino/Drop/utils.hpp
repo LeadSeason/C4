@@ -30,4 +30,19 @@ namespace utils
     {
         return (a > b) ? b : a;
     }
+
+    inline int getUserInt()
+    {
+        #if defined(Arduino_h)
+        while (!Serial.available())
+        {
+        }
+
+        return Serial.parseInt();
+    #else
+        int pos;
+        scanf("%d", &pos);
+        return pos;
+    #endif
+    }
 }
