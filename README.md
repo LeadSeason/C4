@@ -8,11 +8,9 @@
 Made with help from [Toni Lipponen](https://github.com/ToniLipponen),
 or how I like to call him [Tonnikala](https://github.com/ToniLipponen).  
 
-
 <p  align="center">
   <img style="height: 50vh;" src="https://raw.githubusercontent.com/LeadSeason/C4/master/assets/images/wiring.png">
 </p>
-
 
 <p  align="center">
   <img style="height: 50vh;" src="https://raw.githubusercontent.com/LeadSeason/C4/master/assets/images/CAD.png">
@@ -21,6 +19,7 @@ or how I like to call him [Tonnikala](https://github.com/ToniLipponen).
 ## Problems
 - [ ] Algorithm doens't check diagonal
 - [ ] Puck Detectors sometimes fails or miss reads
+- [ ] Make better mounting system for arduino components
 
 ## License
 <p align="center">
